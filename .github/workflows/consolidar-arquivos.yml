@@ -1,0 +1,45 @@
+name: Consolidar arquivos grandes do site
+on:
+  push:
+    paths:
+      - '.github/workflows/consolidar-arquivos.yml'
+      - '.upload-parts/**'
+      - 'asset-transfer/**'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  consolidar:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Baixar repositorio
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+
+      - name: Reconstituir o site independente e o video
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p public/video
+          cat asset-transfer/felipe-acompanhamento.part* > public/video/felipe-acompanhamento.mp4
+          cat .upload-parts/standalone/part-*.b64 | tr -d '\r\n' | base64 --decode > ABRIR_SITE.html
+
+          test "$(stat -c '%s' public/video/felipe-acompanhamento.mp4)" = "7230698"
+          test "$(stat -c '%s' ABRIR_SITE.html)" = "12697610"
+
+          echo "3937406e7bcc4a1f486a68ce767f9a322afb0aef379128b16c4501df22f11065  public/video/felipe-acompanhamento.mp4" | sha256sum -c
+          echo "3a795f7860b96bc1d83b5d759fefef377dc5436567a76c45f37db28c731a5913  ABRIR_SITE.html" | sha256sum -c
+
+      - name: Publicar arquivos completos e retirar partes temporarias
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add ABRIR_SITE.html public/video/felipe-acompanhamento.mp4
+          git rm -qr -- .upload-parts asset-transfer
+          git commit -m "assets: publica video e HTML completo, com checksums verificados"
+          git push origin HEAD:main
