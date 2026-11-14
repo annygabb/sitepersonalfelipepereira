@@ -73,10 +73,12 @@ export default function MotionDirector({paused}:{paused:boolean}) {
      localDisposers.push(()=>{button.removeEventListener('pointermove',move);button.removeEventListener('pointerleave',leave);gsap.set(visual,{clearProps:'transform'});});
     });
    }
-   const refresh=()=>ScrollTrigger.refresh();document.fonts.ready.then(refresh);
-   const mediaLoaded=()=>ScrollTrigger.refresh();root.addEventListener('load',mediaLoaded,true);
+   let refreshFrame=0; let disposed=false;
+   const refresh=()=>{if(disposed)return;cancelAnimationFrame(refreshFrame);refreshFrame=requestAnimationFrame(()=>ScrollTrigger.refresh());};
+   document.fonts.ready.then(refresh);
+   const mediaLoaded=()=>refresh();root.addEventListener('load',mediaLoaded,true);
    return ()=>{
-    localDisposers.forEach(dispose=>dispose());window.removeEventListener('felipe:intro-complete',revealHero);root.removeEventListener('load',mediaLoaded,true);
+    disposed=true;cancelAnimationFrame(refreshFrame);localDisposers.forEach(dispose=>dispose());window.removeEventListener('felipe:intro-complete',revealHero);root.removeEventListener('load',mediaLoaded,true);
     gsap.ticker.remove(tick);lenis.destroy();lenisRef.current=null;delete root.dataset.motion;
    };
   },root);
