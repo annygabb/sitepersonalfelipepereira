@@ -20,8 +20,8 @@ export default function IntroSequence({onActiveChange}:{onActiveChange:(active:b
   const page=document.getElementById('site-page'),overflow=document.body.style.overflow;
   onActiveChange(true);if(page)page.inert=true;document.body.style.overflow='hidden';
   let done=false,exiting=false;let exit:gsap.core.Tween|undefined;
-  const release=()=>{if(done)return;done=true;video.current?.pause();setActive(false);onActiveChange(false);if(page)page.inert=false;document.body.style.overflow=overflow;window.dispatchEvent(new Event('felipe:intro-complete'));document.querySelector<HTMLElement>('.hero h1')?.focus({preventScroll:true});};
-  const finish=()=>{if(exiting)return;exiting=true;exit=gsap.to(root.current,{yPercent:-100,duration:.6,ease:'power3.inOut',onComplete:release});};finishRef.current=finish;
+  const release=()=>{if(done)return;done=true;video.current?.pause();setActive(false);onActiveChange(false);if(page)page.inert=false;document.body.style.overflow=overflow;document.documentElement.classList.remove('intro-pending');document.querySelector<HTMLElement>('.hero h1')?.focus({preventScroll:true});};
+  const finish=()=>{if(exiting)return;exiting=true;document.documentElement.classList.remove('intro-pending');window.dispatchEvent(new Event('felipe:intro-complete'));exit=gsap.to(root.current,{yPercent:-100,duration:.6,ease:'power3.inOut',onComplete:release});};finishRef.current=finish;
   // Hard deadline prevents a slow or blocked media request from trapping the visitor.
   const timer=setTimeout(finish,src?3400:2100);
   const preference=matchMedia('(prefers-reduced-motion: reduce)');const changed=()=>{if(preference.matches)release();};preference.addEventListener('change',changed);

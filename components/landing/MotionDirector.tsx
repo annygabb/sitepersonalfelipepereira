@@ -27,7 +27,7 @@ export default function MotionDirector({paused}:{paused:boolean}) {
     gsap.fromTo('.hero .highlight-mark',{'--mark-progress':0},{'--mark-progress':1,duration:.6,delay:.25,ease:'power2.out'});
    };
    window.addEventListener('felipe:intro-complete',revealHero);
-   revealHero();
+   if(!document.documentElement.classList.contains('intro-pending'))revealHero();
    gsap.utils.toArray<HTMLElement>('.scene-reveal',root).forEach(el=>{
     const interactive=!!el.querySelector('button,a,input,select');
     gsap.fromTo(el,{y:interactive?0:(desktop?45:20),rotationX:interactive?0:(desktop?8:0),opacity:interactive?.65:.35},{y:0,rotationX:0,opacity:1,duration:.8,ease:'power3.out',clearProps:'transform,opacity',scrollTrigger:{trigger:el,start:'top 94%',once:true}});

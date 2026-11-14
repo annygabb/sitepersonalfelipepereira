@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 };
 export const viewport:Viewport={width:'device-width',initialScale:1,themeColor:'#0D0E10'};
 export default function RootLayout({children}:Readonly<{children:React.ReactNode}>){
- return <html lang="pt-BR"><body><script type="application/ld+json" dangerouslySetInnerHTML={{__html:JSON.stringify(siteSchema).replace(/</g,'\\u003c')}}/>{children}</body></html>;
+ return <html lang="pt-BR" suppressHydrationWarning><head><script dangerouslySetInnerHTML={{__html:"try{if(performance.getEntriesByType('navigation')[0]?.type==='reload'){history.scrollRestoration='manual';if(location.hash)history.replaceState(null,'',location.pathname+location.search);scrollTo(0,0)}var r=matchMedia('(prefers-reduced-motion: reduce)').matches,s=navigator.connection&&navigator.connection.saveData;if(!r&&!s&&!location.hash){document.documentElement.classList.add('intro-pending');setTimeout(function(){document.documentElement.classList.remove('intro-pending')},6000)}}catch(e){}"}}/><style>{`html.intro-pending:before{content:"";position:fixed;inset:0;background:#080d10;z-index:9998}html.intro-pending .hero-line,html.intro-pending .hero-description,html.intro-pending .hero-button,html.intro-pending .hero-portrait{visibility:hidden}`}</style></head><body><script type="application/ld+json" dangerouslySetInnerHTML={{__html:JSON.stringify(siteSchema).replace(/</g,'\\u003c')}}/>{children}</body></html>;
 }
 
 import "./fidelity.css";
