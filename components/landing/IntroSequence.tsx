@@ -11,7 +11,7 @@ export default function IntroSequence({onActiveChange}:{onActiveChange:(active:b
  useEffect(()=>{
   const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
   const saveData=(navigator as Navigator&{connection?:{saveData?:boolean}}).connection?.saveData;
-  if(location.hash||reduced||saveData)return;
+  if(location.hash||reduced||saveData||!document.documentElement.classList.contains('intro-pending'))return;
   const mobile=matchMedia('(max-aspect-ratio: 4/5)').matches;
   setSrc(mobile?preloaderFilm.mobile:preloaderFilm.desktop);setActive(true);
  },[]);
@@ -22,7 +22,9 @@ export default function IntroSequence({onActiveChange}:{onActiveChange:(active:b
   const release=()=>{if(done)return;done=true;video.current?.pause();setActive(false);onActiveChange(false);if(page)page.inert=false;document.body.style.overflow=overflow;document.documentElement.classList.remove('intro-pending');document.querySelector<HTMLElement>('.hero h1')?.focus({preventScroll:true});};
   const finish=()=>{if(exiting)return;exiting=true;document.documentElement.classList.remove('intro-pending');window.dispatchEvent(new Event('felipe:intro-complete'));exit=gsap.to(root.current,{yPercent:-100,duration:.25,ease:'power3.inOut',onComplete:release});};finishRef.current=finish;
   // Hard deadline prevents a slow or blocked media request from trapping the visitor.
-  const timer=setTimeout(finish,src?3400:1000);
+  const deadline=Number(document.documentElement.dataset.introDeadline);
+  const remaining=Number.isFinite(deadline)&&deadline>0?Math.max(0,deadline-performance.now()-250):1000;
+  const timer=setTimeout(finish,src?3400:Math.min(1000,remaining));
   const hardStop=setTimeout(release,src?4500:2400);
   const preference=matchMedia('(prefers-reduced-motion: reduce)');const changed=()=>{if(preference.matches)release();};preference.addEventListener('change',changed);
   return()=>{clearTimeout(timer);clearTimeout(hardStop);exit?.kill();preference.removeEventListener('change',changed);if(page)page.inert=false;document.body.style.overflow=overflow;onActiveChange(false);};
