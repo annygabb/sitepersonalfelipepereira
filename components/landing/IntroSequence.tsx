@@ -1,12 +1,11 @@
 "use client";
 import {useEffect,useRef,useState} from 'react';
 import {gsap} from 'gsap';
-import {IconArrowRight as ArrowRight} from "@tabler/icons-react";
 import {asset} from '@/content/assets';
 import {preloaderFilm} from '@/content/preloader';
 import FelipePereiraSignature from './FelipePereiraSignature';
 export default function IntroSequence({onActiveChange}:{onActiveChange:(active:boolean)=>void}){
- const root=useRef<HTMLDivElement>(null),video=useRef<HTMLVideoElement>(null),skip=useRef<HTMLButtonElement>(null);
+ const root=useRef<HTMLDivElement>(null),video=useRef<HTMLVideoElement>(null);
  const [active,setActive]=useState(false),[src,setSrc]=useState<string|null>(null),[signed,setSigned]=useState(false);
  const finishRef=useRef(()=>{});
  useEffect(()=>{
@@ -24,13 +23,13 @@ export default function IntroSequence({onActiveChange}:{onActiveChange:(active:b
   const finish=()=>{if(exiting)return;exiting=true;document.documentElement.classList.remove('intro-pending');window.dispatchEvent(new Event('felipe:intro-complete'));exit=gsap.to(root.current,{yPercent:-100,duration:.6,ease:'power3.inOut',onComplete:release});};finishRef.current=finish;
   // Hard deadline prevents a slow or blocked media request from trapping the visitor.
   const timer=setTimeout(finish,src?3400:2100);
+  const hardStop=setTimeout(release,src?4500:3200);
   const preference=matchMedia('(prefers-reduced-motion: reduce)');const changed=()=>{if(preference.matches)release();};preference.addEventListener('change',changed);
-  return()=>{clearTimeout(timer);exit?.kill();preference.removeEventListener('change',changed);if(page)page.inert=false;document.body.style.overflow=overflow;onActiveChange(false);};
+  return()=>{clearTimeout(timer);clearTimeout(hardStop);exit?.kill();preference.removeEventListener('change',changed);if(page)page.inert=false;document.body.style.overflow=overflow;onActiveChange(false);};
  },[active,onActiveChange,src]);
  if(!active)return null;
  return <div className={`first-rep-intro ${src?'has-film':'signature-fallback'}`} ref={root} role="region" aria-label="Abertura Felipe Pereira" data-lenis-prevent>
   {src&&<video ref={video} src={asset(src)} autoPlay muted playsInline preload="auto" onTimeUpdate={e=>{if(e.currentTarget.currentTime>=3.4)finishRef.current();}} onEnded={()=>finishRef.current()} onError={()=>setSrc(null)} aria-hidden="true"/>}
   <div className="first-rep-light" aria-hidden="true"/><div className="first-rep-brand"><span className="first-rep-edition">BLACK EDITION</span><FelipePereiraSignature speed={1} onAnimationComplete={()=>setSigned(true)}/><span className={`first-rep-profession ${signed?'is-signed':''}`}>PERSONAL TRAINER</span></div>
-  <button className="intro-skip" ref={skip} onClick={()=>finishRef.current()}>Pular introdução<ArrowRight size={16}/></button>
  </div>;
 }
