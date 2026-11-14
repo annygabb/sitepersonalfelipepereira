@@ -2,7 +2,6 @@
 
 import {useEffect, useRef, useState} from "react";
 import {IconArrowLeft as ArrowLeft, IconArrowRight as ArrowRight, IconCheck as Check, IconMessageCircle as MessageCircle, IconX as X} from "@tabler/icons-react";
-import {gsap} from "gsap";
 import {Button} from "@/components/ui/button";
 import {currency, makeMessage, plans, questions, whatsappUrl, type Person, type PlanId} from "@/content/coaching";
 
@@ -11,7 +10,7 @@ type Props = {planId: PlanId | null; onClose: () => void};
 export default function QualificationWizard({planId, onClose}: Props) {
   const dialogRef = useRef<HTMLDialogElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
-  const contentRef = useRef<HTMLDivElement>(null);
+  const nameRef = useRef<HTMLTextAreaElement>(null);
   const [step, setStep] = useState(0);
   const [answers, setAnswers] = useState<string[]>(Array(6).fill(""));
   const [person, setPerson] = useState<Person>({name: "", age: "", height: "", weight: ""});
@@ -26,12 +25,21 @@ export default function QualificationWizard({planId, onClose}: Props) {
     } else if (!planId && dialog?.open) { dialog.close(); document.body.style.overflow = ""; }
     return () => { document.body.style.overflow = ""; };
   }, [planId]);
-  useEffect(() => { if (planId) titleRef.current?.focus(); }, [step, planId]);
-  useEffect(()=>{
-    if(!planId || window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;
-    const ctx=gsap.context(()=>{gsap.fromTo(contentRef.current,{rotationY:7,x:12,opacity:.35},{rotationY:0,x:0,opacity:1,duration:.32,ease:'power3.out',clearProps:'transform,opacity'});});
-    return()=>ctx.revert();
-  },[step,planId]);
+  useEffect(() => {
+    if (!planId) return;
+    titleRef.current?.focus({preventScroll: true});
+    const dialog = dialogRef.current;
+    if (dialog && step > 0) {
+      const main = dialog.querySelector<HTMLElement>('.journey-main');
+      if (main && window.matchMedia('(max-width: 767px)').matches) {
+        dialog.scrollTo({top: main.offsetTop, behavior: 'instant'});
+      }
+    }
+  }, [step, planId]);
+  useEffect(() => {
+    const field = nameRef.current;
+    if (field) { field.style.height = 'auto'; field.style.height = `${field.scrollHeight}px`; }
+  }, [person.name, step]);
   const message = makeMessage(plan, person, answers);
   function send() {
     const height=Number(person.height.replace(',','.')), age=Number(person.age), weight=Number(person.weight.replace(',','.'));
@@ -54,7 +62,7 @@ export default function QualificationWizard({planId, onClose}: Props) {
       <div className="journey-main">
         <div className="journey-progress-label"><span>SUA JORNADA</span><span>{step < 6 ? `Pergunta ${step + 1} de 6` : "Sobre você"}</span></div>
         <div className="progress-segments" role="progressbar" aria-label="Perguntas respondidas" aria-valuemin={0} aria-valuemax={6} aria-valuenow={Math.min(step+1,6)}>{Array.from({length:6},(_,i)=><span key={i} className={i<=step?'done':''}/>)}</div>
-        <div className="step-content" ref={contentRef} key={step}>
+        <div className="step-content" key={step}>
           {step < 6 ? <form onSubmit={e => {e.preventDefault(); if (answers[step]) setStep(step + 1);}}>
             <span className="step-kicker">{step === 0 ? "PARA COMEÇAR, ME CONTE:" : "Um passo de cada vez."}</span>
             <h2 id="journey-title" ref={titleRef} tabIndex={-1}>{step===0?<><span>Qual é o seu </span><mark className="question-highlight">principal objetivo?</mark></>:questions[step].title}</h2>
@@ -66,7 +74,7 @@ export default function QualificationWizard({planId, onClose}: Props) {
           </form> : <form onSubmit={e => { e.preventDefault(); send(); }}>
             <span className="step-kicker">Quase lá.</span><h2 id="journey-title" ref={titleRef} tabIndex={-1}>Como podemos chamar você?</h2><p className="question-helper">Só o necessário para começar a conversa.</p>
             <div className="identity-fields">
-              <label>Seu nome<input autoComplete="given-name" required minLength={2} maxLength={100} value={person.name} onChange={e => changePerson("name", e.target.value)} placeholder="Como você gosta de ser chamado(a)" onBlur={e => changePerson("name", e.target.value.trim())}/></label>
+              <label>Seu nome<textarea ref={nameRef} rows={1} autoComplete="name" required minLength={2} maxLength={100} value={person.name} onChange={e => changePerson("name", e.target.value.replace(/[\r\n]+/g, " "))} placeholder="Como você gosta de ser chamado(a)" onBlur={e => changePerson("name", e.target.value.trim())}/></label>
               <div className="field-row"><label>Altura <span>(cm)</span><input type="text" inputMode="decimal" maxLength={5} pattern="[0-9]+([.,][0-9]+)?" required value={person.height} onChange={e => changePerson("height", e.target.value)} placeholder="Ex.: 170"/></label><label>Idade <span>(anos)</span><input type="text" inputMode="numeric" maxLength={3} pattern="[0-9]+" required value={person.age} onChange={e => changePerson("age", e.target.value)} placeholder="Ex.: 25"/></label></div>
               <label>Peso <span>(kg · opcional)</span><input type="text" inputMode="decimal" maxLength={5} pattern="[0-9]+([.,][0-9]+)?" value={person.weight} onChange={e => changePerson("weight", e.target.value)} placeholder="Preencha se quiser"/></label>
             </div>

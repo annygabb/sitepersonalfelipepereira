@@ -6,7 +6,7 @@ import './cinematic.css';
 import './conversion.css';
 export const metadata: Metadata = {
  metadataBase:new URL(site.url), title:site.title, description:site.description,
- authors:[{name:'Felipe Pereira'}],alternates:{canonical:site.url},robots:{index:false,follow:false},
+ authors:[{name:'Felipe Pereira'}],alternates:{canonical:site.url},robots:{index:process.env.VERCEL_ENV === 'production',follow:process.env.VERCEL_ENV === 'production'},
  openGraph:{type:'website',url:site.url,title:site.socialTitle,description:site.description,siteName:site.name,locale:'pt_BR',images:[{url:`${site.url}${site.socialImage}`,width:1200,height:630,type:'image/jpeg',alt:site.socialAlt}]},
  twitter:{card:'summary_large_image',title:site.socialTitle,description:site.description,images:[{url:`${site.url}${site.socialImage}`,alt:site.socialAlt}]},
  icons:{icon:[{url:'/favicon.ico'},{url:'/favicon-32x32.png',sizes:'32x32',type:'image/png'},{url:'/favicon-16x16.png',sizes:'16x16',type:'image/png'}],apple:[{url:'/apple-touch-icon.png',sizes:'180x180',type:'image/png'}]}

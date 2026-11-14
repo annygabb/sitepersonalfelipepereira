@@ -156,3 +156,11 @@
 
 /* Marca completa original, sem recortes de cabeça ou pernas. */
 .site-header .brand,.wave-footer .brand{display:flex;align-items:center}.full-logo{display:block;width:130px;height:82px;max-width:100%;overflow:visible;flex:none}.site-header .full-logo{width:112px;height:70px}.wave-footer .full-logo{width:155px;height:112px}.approved-plan-badge{display:block}.approved-plan:not(.featured) .approved-plan-badge{position:absolute;top:-17px;left:50%;transform:translateX(-50%);white-space:nowrap}@media(max-width:767px){.site-header .full-logo{width:88px;height:62px}.wave-footer .full-logo{width:150px;height:108px}.approved-plan:not(.featured) .approved-plan-badge{top:-13px}}
+
+/* Keep step transitions lightweight and name fields readable on narrow screens. */
+.journey-dialog .step-content{animation:journey-step-fade .18s ease-out both}
+@keyframes journey-step-fade{from{opacity:.65}to{opacity:1}}
+.journey-dialog .identity-fields textarea{display:block;width:100%;min-height:49px;resize:none;overflow:hidden;overflow-wrap:anywhere;white-space:pre-wrap;background:#1a1d20;color:var(--text);border:1px solid #ffffff25;padding:13px 14px;border-radius:4px;font:400 16px/1.4 var(--font-body);text-align:inherit}
+.journey-dialog .identity-fields textarea::placeholder{color:#92948f}
+@media(max-width:767px){.journey-dialog .identity-fields textarea{text-align:center}}
+@media(prefers-reduced-motion:reduce){.journey-dialog .step-content{animation:none}}

@@ -85,7 +85,7 @@ function LuxuryPricing({onSelect}: {onSelect: (id: PlanId) => void}) {
 
 function FAQ() {
   const faqs = [
-    ["O acompanhamento é totalmente online?", "Sim. A consultoria é individual e online, com treino personalizado e suporte pelo WhatsApp para dúvidas e orientações."],
+    ["O acompanhamento é totalmente online?", "Sim. Felipe oferece consultoria individual online para pessoas em Goiás e em todo o Brasil, com treino personalizado e suporte pelo WhatsApp para dúvidas e orientações."],
     ["Como o treino é pensado para mim?", "A avaliação considera seu objetivo, momento, nível e disponibilidade. A partir disso, Felipe planeja seu treino e acompanha a necessidade de ajustes."],
     ["Como funcionam o suporte e os ajustes?", "O acompanhamento inclui feedback semanal e suporte pelo WhatsApp para dúvidas e correção de exercícios. Os ajustes são feitos quando necessários. Horários de atendimento são combinados diretamente com Felipe."],
     ["O que preciso para começar?", "Escolha um plano, responda às perguntas rápidas e converse com Felipe. Nessa conversa, vocês alinham os próximos passos, a avaliação e as condições de início."],
