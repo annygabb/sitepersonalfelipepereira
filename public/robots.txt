@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://personalfelipepereiraa.vercel.app/sitemap.xml
+Sitemap: https://www.felipepereiratreinador.com.br/sitemap.xml

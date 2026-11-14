@@ -2,11 +2,13 @@
 
 > Consultoria individual online de treinamento físico para pessoas em Goiás e em todo o Brasil.
 
-- Site oficial: https://personalfelipepereiraa.vercel.app/
-- Como funciona: https://personalfelipepereiraa.vercel.app/#como-funciona
-- Planos de acompanhamento: https://personalfelipepereiraa.vercel.app/#planos
-- Dúvidas frequentes: https://personalfelipepereiraa.vercel.app/#duvidas
-- Instagram: https://www.instagram.com/felipepereira_personal/
-- Contato: https://wa.me/556291393319
+## Informações
 
-O acompanhamento inclui treino personalizado, suporte pelo WhatsApp, feedback semanal e ajustes quando necessários. Formas de pagamento e condições são combinadas diretamente com Felipe. A consultoria apresentada é de treino; orientações alimentares dependem de profissional habilitado.
+- [Site oficial](https://www.felipepereiratreinador.com.br/): apresentação e atendimento.
+- [Como funciona](https://www.felipepereiratreinador.com.br/#como-funciona): etapas do acompanhamento.
+- [Planos](https://www.felipepereiratreinador.com.br/#planos): opções de consultoria.
+- [Perguntas frequentes](https://www.felipepereiratreinador.com.br/#duvidas): respostas sobre o serviço.
+- [Instagram](https://www.instagram.com/felipepereira_personal/): perfil profissional.
+- [WhatsApp](https://wa.me/556291393319): contato com Felipe.
+
+O acompanhamento inclui treino personalizado, suporte pelo WhatsApp, feedback semanal e ajustes quando necessários. Formas de pagamento e condições são combinadas diretamente com Felipe. Orientações alimentares dependem de profissional habilitado.
