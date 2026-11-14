@@ -17,7 +17,7 @@ export default function MotionDirector({paused}:{paused:boolean}) {
   mm.add({motion:'(prefers-reduced-motion: no-preference)',desktop:'(min-width: 900px) and (hover: hover) and (pointer: fine)',fine:'(hover: hover) and (pointer: fine)'},context=>{
    const {motion,desktop,fine}=context.conditions!;if(!motion)return;
    root.dataset.motion='gsap';
-   const lenis=new Lenis({duration:1.05,smoothWheel:true,syncTouch:false,anchors:true,prevent:node=>!!node.closest('[data-lenis-prevent]'),respectReducedMotion:true});
+   const lenis=new Lenis({duration:1.05,smoothWheel:!matchMedia('(pointer: coarse)').matches,syncTouch:false,anchors:true,prevent:node=>!!node.closest('[data-lenis-prevent]'),respectReducedMotion:true});
    lenisRef.current=lenis;if(pausedRef.current)lenis.stop();
    lenis.on('scroll',ScrollTrigger.update);
    const tick=(time:number)=>lenis.raf(time*1000);
@@ -35,7 +35,7 @@ export default function MotionDirector({paused}:{paused:boolean}) {
    gsap.utils.toArray<HTMLElement>('.section-sweep,.approved-sweep',root).forEach(el=>{
     gsap.fromTo(el,{scaleX:.1},{scaleX:1,duration:1,ease:'power3.out',scrollTrigger:{trigger:el,start:'top 92%',once:true}});
    });
-   gsap.utils.toArray<HTMLElement>('.approved-step,.approved-purpose',root).forEach((el,i)=>{gsap.fromTo(el,{opacity:0,y:24},{opacity:1,y:0,duration:.65,delay:desktop?i*.16:0,ease:'power2.out',clearProps:'transform,opacity',scrollTrigger:{trigger:el,start:'top 88%',once:true}});});
+   if(desktop)gsap.utils.toArray<HTMLElement>('.approved-step,.approved-purpose',root).forEach((el,i)=>{gsap.fromTo(el,{opacity:0,y:24},{opacity:1,y:0,duration:.65,delay:desktop?i*.16:0,ease:'power2.out',clearProps:'transform,opacity',scrollTrigger:{trigger:el,start:'top 88%',once:true}});});
    const revealGroups=[
     ['.approved-about-copy',['.approved-eyebrow','h2','p']],
     ['.approved-pricing .approved-centered-heading',['.approved-eyebrow','h2','p']],

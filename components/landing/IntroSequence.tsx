@@ -9,19 +9,19 @@ export default function IntroSequence({onActiveChange}:{onActiveChange:(active:b
  const root=useRef<HTMLDivElement>(null),video=useRef<HTMLVideoElement>(null),skip=useRef<HTMLButtonElement>(null);
  const [active,setActive]=useState(false),[src,setSrc]=useState<string|null>(null),[signed,setSigned]=useState(false);
  const finishRef=useRef(()=>{});
- useEffect(()=>{let seen=false;try{seen=sessionStorage.getItem('felipe-first-rep-v4')==='seen';}catch{}
+ useEffect(()=>{
   const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
   const saveData=(navigator as Navigator&{connection?:{saveData?:boolean}}).connection?.saveData;
-  if(seen||location.hash||reduced||saveData)return;
+  if(location.hash||reduced||saveData)return;
   const mobile=matchMedia('(max-aspect-ratio: 4/5)').matches;
   setSrc(mobile?preloaderFilm.mobile:preloaderFilm.desktop);setActive(true);
  },[]);
  useEffect(()=>{if(!active||!root.current)return;
   const page=document.getElementById('site-page'),overflow=document.body.style.overflow;
-  onActiveChange(true);if(page)page.inert=true;document.body.style.overflow='hidden';skip.current?.focus();
+  onActiveChange(true);if(page)page.inert=true;document.body.style.overflow='hidden';
   let done=false,exiting=false;let exit:gsap.core.Tween|undefined;
-  const release=()=>{if(done)return;done=true;video.current?.pause();try{sessionStorage.setItem('felipe-first-rep-v4','seen');}catch{}setActive(false);onActiveChange(false);if(page)page.inert=false;document.body.style.overflow=overflow;window.dispatchEvent(new Event('felipe:intro-complete'));document.querySelector<HTMLElement>('.hero h1')?.focus({preventScroll:true});};
-  const finish=()=>{if(exiting)return;exiting=true;exit=gsap.to(root.current,{clipPath:'inset(0 0 100% 0)',duration:.6,ease:'power3.inOut',onComplete:release});};finishRef.current=finish;
+  const release=()=>{if(done)return;done=true;video.current?.pause();setActive(false);onActiveChange(false);if(page)page.inert=false;document.body.style.overflow=overflow;window.dispatchEvent(new Event('felipe:intro-complete'));document.querySelector<HTMLElement>('.hero h1')?.focus({preventScroll:true});};
+  const finish=()=>{if(exiting)return;exiting=true;exit=gsap.to(root.current,{yPercent:-100,duration:.6,ease:'power3.inOut',onComplete:release});};finishRef.current=finish;
   // Hard deadline prevents a slow or blocked media request from trapping the visitor.
   const timer=setTimeout(finish,src?3400:2100);
   const preference=matchMedia('(prefers-reduced-motion: reduce)');const changed=()=>{if(preference.matches)release();};preference.addEventListener('change',changed);
