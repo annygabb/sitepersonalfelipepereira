@@ -1,5 +1,5 @@
 import * as React from "react"
-import { ChevronRight, MoreHorizontal } from "lucide-react"
+import {IconChevronRight as ChevronRight, IconDots as MoreHorizontal} from "@tabler/icons-react"
 import { Slot } from "radix-ui"
 
 import { cn } from "@/lib/utils"

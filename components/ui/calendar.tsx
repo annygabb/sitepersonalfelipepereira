@@ -1,11 +1,7 @@
 "use client"
 
 import * as React from "react"
-import {
-  ChevronDownIcon,
-  ChevronLeftIcon,
-  ChevronRightIcon,
-} from "lucide-react"
+import {IconChevronDown as ChevronDownIcon, IconChevronLeft as ChevronLeftIcon, IconChevronRight as ChevronRightIcon} from "@tabler/icons-react"
 import {
   DayPicker,
   getDefaultClassNames,

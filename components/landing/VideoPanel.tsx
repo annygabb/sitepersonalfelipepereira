@@ -1,6 +1,6 @@
 "use client";
 import {useEffect,useRef,useState} from 'react';
-import {ArrowUpRight,Volume2,VolumeX} from 'lucide-react';
+import {IconArrowUpRight as ArrowUpRight, IconVolume as Volume2, IconVolumeOff as VolumeX} from "@tabler/icons-react";
 import {asset} from '@/content/assets';
 import {media} from '@/content/media';
 export default function VideoPanel(){

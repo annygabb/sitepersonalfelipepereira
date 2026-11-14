@@ -1,6 +1,6 @@
 "use client";
 import {useRef,useState} from 'react';
-import {ArrowRight} from 'lucide-react';
+import {IconArrowRight as ArrowRight} from "@tabler/icons-react";
 const moments=[
  {label:'Vou começar',title:'Um começo com direção.',text:'Seu ponto de partida é a sua realidade. A avaliação ajuda a organizar o treino de acordo com seu nível, seus objetivos e o tempo que você tem.'},
  {label:'Já treino',title:'Clareza para seguir evoluindo.',text:'Entenda o que precisa de ajuste. O acompanhamento reúne planejamento, feedback semanal e orientação para você treinar com mais clareza.'},

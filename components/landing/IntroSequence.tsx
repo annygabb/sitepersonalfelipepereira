@@ -1,7 +1,7 @@
 "use client";
 import {useEffect,useRef,useState} from 'react';
 import {gsap} from 'gsap';
-import {ArrowRight} from 'lucide-react';
+import {IconArrowRight as ArrowRight} from "@tabler/icons-react";
 import {asset} from '@/content/assets';
 import {preloaderFilm} from '@/content/preloader';
 import FelipePereiraSignature from './FelipePereiraSignature';

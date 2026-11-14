@@ -1,4 +1,4 @@
-import { LinkIcon } from "lucide-react";
+import {IconLink as LinkIcon} from "@tabler/icons-react";
 import { Button } from "@/components/ui/button";
 import { connectorErrorRecovery } from "@/lib/connector-errors.mjs";
 

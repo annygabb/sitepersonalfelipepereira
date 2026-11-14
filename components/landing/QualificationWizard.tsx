@@ -1,7 +1,7 @@
 "use client";
 
 import {useEffect, useRef, useState} from "react";
-import {ArrowLeft, ArrowRight, Check, MessageCircle, X} from "lucide-react";
+import {IconArrowLeft as ArrowLeft, IconArrowRight as ArrowRight, IconCheck as Check, IconMessageCircle as MessageCircle, IconX as X} from "@tabler/icons-react";
 import {gsap} from "gsap";
 import {Button} from "@/components/ui/button";
 import {currency, makeMessage, plans, questions, whatsappUrl, type Person, type PlanId} from "@/content/coaching";
