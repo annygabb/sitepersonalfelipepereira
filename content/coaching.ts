@@ -16,6 +16,8 @@ export const questions = [
 ] as const;
 export type Person = { name: string; age: string; height: string; weight: string };
 export function makeMessage(plan: Plan, person: Person, answers: string[]) {
-  return ['Olá, Felipe! Gostaria de saber mais sobre a consultoria Black Edition.', '', `Plano escolhido: ${plan.name}`, `Duração: ${plan.months} meses`, `Valor total informado: ${currency(plan.totalCents)}`, `Equivalente mensal informado: ${currency(plan.monthlyCents)}`, '', `Nome: ${person.name.trim()}`, `Idade: ${person.age} anos`, `Altura: ${person.height} cm`, ...(person.weight ? [`Peso: ${person.weight} kg`] : []), '', ...questions.map((question, i) => `${question.label}: ${answers[i]}`), '', 'Gostaria de conversar sobre os próximos passos.'].join('\n');
+  return [`Olá, Felipe! Vim pelo site e gostaria de saber mais sobre o plano: ${plan.name}.`, '', `Duração: ${plan.months} meses`, `Valor total informado: ${currency(plan.totalCents)}`, `Equivalente mensal informado: ${currency(plan.monthlyCents)}`, '', `Nome: ${person.name.trim()}`, `Idade: ${person.age} anos`, `Altura: ${person.height} cm`, ...(person.weight ? [`Peso: ${person.weight} kg`] : []), '', ...questions.map((question, i) => `${question.label}: ${answers[i]}`)].join('\n');
 }
 export const whatsappUrl = (message: string) => `https://wa.me/556291393319?text=${encodeURIComponent(message)}`;
+
+export const generalWhatsAppUrl = whatsappUrl('Olá, Felipe! Vim pelo site e quero saber mais sobre o acompanhamento.');
