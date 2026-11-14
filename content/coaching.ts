@@ -1,7 +1,7 @@
 export const plans = [
-  {id: 'trimestral', name: 'Trimestral', months: 3, monthlyCents: 9990, totalCents: 29970, description: 'Um começo com direção.'},
-  {id: 'semestral', name: 'Semestral', months: 6, monthlyCents: 8990, totalCents: 53940, description: 'Tempo para construir constância.'},
-  {id: 'anual', name: 'Anual', months: 12, monthlyCents: 7990, totalCents: 95880, description: 'Acompanhamento para ir além.'},
+  {id: 'trimestral', name: 'Trimestral', months: 3, monthlyCents: 10990, totalCents: 32970, description: 'Um começo com direção.'},
+  {id: 'semestral', name: 'Semestral', months: 6, monthlyCents: 9990, totalCents: 59940, description: 'Tempo para construir constância.'},
+  {id: 'anual', name: 'Anual', months: 12, monthlyCents: 8990, totalCents: 107880, description: 'Acompanhamento para ir além.'},
 ] as const;
 export type PlanId = typeof plans[number]['id'];
 export type Plan = typeof plans[number];
