@@ -20,9 +20,9 @@ export default function IntroSequence({onActiveChange}:{onActiveChange:(active:b
   onActiveChange(true);if(page)page.inert=true;document.body.style.overflow='hidden';
   let done=false,exiting=false;let exit:gsap.core.Tween|undefined;
   const release=()=>{if(done)return;done=true;video.current?.pause();setActive(false);onActiveChange(false);if(page)page.inert=false;document.body.style.overflow=overflow;document.documentElement.classList.remove('intro-pending');document.querySelector<HTMLElement>('.hero h1')?.focus({preventScroll:true});};
-  const finish=()=>{if(exiting)return;exiting=true;document.documentElement.classList.remove('intro-pending');window.dispatchEvent(new Event('felipe:intro-complete'));exit=gsap.to(root.current,{yPercent:-100,duration:.4,ease:'power3.inOut',onComplete:release});};finishRef.current=finish;
+  const finish=()=>{if(exiting)return;exiting=true;document.documentElement.classList.remove('intro-pending');window.dispatchEvent(new Event('felipe:intro-complete'));exit=gsap.to(root.current,{yPercent:-100,duration:.25,ease:'power3.inOut',onComplete:release});};finishRef.current=finish;
   // Hard deadline prevents a slow or blocked media request from trapping the visitor.
-  const timer=setTimeout(finish,src?3400:1300);
+  const timer=setTimeout(finish,src?3400:1000);
   const hardStop=setTimeout(release,src?4500:2400);
   const preference=matchMedia('(prefers-reduced-motion: reduce)');const changed=()=>{if(preference.matches)release();};preference.addEventListener('change',changed);
   return()=>{clearTimeout(timer);clearTimeout(hardStop);exit?.kill();preference.removeEventListener('change',changed);if(page)page.inert=false;document.body.style.overflow=overflow;onActiveChange(false);};
@@ -30,6 +30,6 @@ export default function IntroSequence({onActiveChange}:{onActiveChange:(active:b
  if(!active)return null;
  return <div className={`first-rep-intro ${src?'has-film':'signature-fallback'}`} ref={root} role="region" aria-label="Abertura Felipe Pereira" data-lenis-prevent>
   {src&&<video ref={video} src={asset(src)} autoPlay muted playsInline preload="auto" onTimeUpdate={e=>{if(e.currentTarget.currentTime>=3.4)finishRef.current();}} onEnded={()=>finishRef.current()} onError={()=>setSrc(null)} aria-hidden="true"/>}
-  <div className="first-rep-light" aria-hidden="true"/><div className="first-rep-brand"><span className="first-rep-edition">BLACK EDITION</span><FelipePereiraSignature speed={src?1:1.7} onAnimationComplete={()=>setSigned(true)}/><span className={`first-rep-profession ${signed?'is-signed':''}`}>PERSONAL TRAINER</span></div>
+  <div className="first-rep-light" aria-hidden="true"/><div className="first-rep-brand"><span className="first-rep-edition">BLACK EDITION</span><FelipePereiraSignature speed={src?1:2.2} onAnimationComplete={()=>setSigned(true)}/><span className={`first-rep-profession ${signed?'is-signed':''}`}>PERSONAL TRAINER</span></div>
  </div>;
 }

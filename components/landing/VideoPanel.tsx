@@ -15,7 +15,7 @@ export default function VideoPanel(){
  },[]);
  const toggle=()=>{const node=video.current;if(!node)return;if(node.paused){userPaused.current=false;if(!node.src)node.src=asset('/video/felipe-acompanhamento.mp4');node.play().catch(()=>setFailed(true));}else{userPaused.current=true;node.pause();}};
  return <div className="video-panel native-reel" ref={panel}>
-  <div className="video-window"><div className="reel-side-caption"><small>ACOMPANHAMENTO<br/>DE VERDADE.</small><span>Veja o treino<br/><em>na prática.</em></span></div><video ref={video} muted={muted} playsInline loop preload="none" poster={asset('/video/felipe-poster-400.webp')} onPlaying={()=>setPlaying(true)} onPause={()=>setPlaying(false)} onError={()=>setFailed(true)}/>
+  <div className="video-window"><div className="reel-side-caption"><small>ACOMPANHAMENTO<br/>DE VERDADE.</small><span>Veja o treino<br/><em>na prática.</em></span></div><video ref={video} muted={muted} playsInline loop preload="none" poster={asset('/video/felipe-poster-330.webp')} onPlaying={()=>setPlaying(true)} onPause={()=>setPlaying(false)} onError={()=>setFailed(true)}/>
    <button type="button" className="reel-video-toggle" onClick={toggle} aria-label={playing?'Pausar vídeo':'Reproduzir vídeo'}/><div className="reel-controls"><button onClick={()=>setMuted(!muted)} aria-label={muted?'Ativar som':'Silenciar vídeo'}>{muted?<VolumeX size={18}/>:<Volume2 size={18}/>}</button></div>
   </div><div className="video-panel-footer"><span>{failed?'Veja o vídeo pelo link ao lado.':'Felipe Pereira · acompanhamento na prática'}</span><a href={media.reel.url} target="_blank" rel="noopener noreferrer">Instagram<ArrowUpRight size={14}/></a></div>
  </div>;

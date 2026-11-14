@@ -10,4 +10,4 @@ for(const name of readdirSync(resolve('public/video')).filter(n=>n.endsWith('.mp
  const mime=name.endsWith('.mp4')?'video/mp4':'image/webp';
  assets[`/video/${name}`]=`data:${mime};base64,${readFileSync(resolve('public/video',name)).toString('base64')}`;
 }
-export default defineConfig({base:'./',plugins:[react()],resolve:{alias:{'@':resolve('.')}},define:{__INLINE_ASSETS__:JSON.stringify(assets)},build:{outDir:'dist-static',emptyOutDir:true,assetsInlineLimit:1000000,rollupOptions:{input:resolve('index.html')}}});
+export default defineConfig({base:'./',plugins:[react()],resolve:{alias:{'@':resolve('.')}},define:{__INLINE_ASSETS__:JSON.stringify(assets)},build:{outDir:'dist-static',emptyOutDir:true,assetsInlineLimit:1000000,rollupOptions:{input:resolve('index.html'),output:{inlineDynamicImports:true}}}});
