@@ -1,12 +1,11 @@
 "use client";
 import {useEffect,useRef,useState} from 'react';
-import {gsap} from 'gsap';
 import {asset} from '@/content/assets';
 import {preloaderFilm} from '@/content/preloader';
 import FelipePereiraSignature from './FelipePereiraSignature';
 export default function IntroSequence({onActiveChange}:{onActiveChange:(active:boolean)=>void}){
  const root=useRef<HTMLDivElement>(null),video=useRef<HTMLVideoElement>(null);
- const [active,setActive]=useState(false),[src,setSrc]=useState<string|null>(null),[signed,setSigned]=useState(false);
+ const [active,setActive]=useState(false),[src,setSrc]=useState<string|null>(null),[signed,setSigned]=useState(false),[exiting,setExiting]=useState(false);
  const finishRef=useRef(()=>{});
  useEffect(()=>{
   const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -18,19 +17,19 @@ export default function IntroSequence({onActiveChange}:{onActiveChange:(active:b
  useEffect(()=>{if(!active||!root.current)return;
   const page=document.getElementById('site-page'),overflow=document.body.style.overflow;
   onActiveChange(true);if(page)page.inert=true;document.body.style.overflow='hidden';
-  let done=false,exiting=false;let exit:gsap.core.Tween|undefined;
+  let done=false,leaving=false;let exitTimer:ReturnType<typeof setTimeout>|undefined;
   const release=()=>{if(done)return;done=true;video.current?.pause();setActive(false);onActiveChange(false);if(page)page.inert=false;document.body.style.overflow=overflow;document.documentElement.classList.remove('intro-pending');document.querySelector<HTMLElement>('.hero h1')?.focus({preventScroll:true});};
-  const finish=()=>{if(exiting)return;exiting=true;document.documentElement.classList.remove('intro-pending');window.dispatchEvent(new Event('felipe:intro-complete'));exit=gsap.to(root.current,{yPercent:-100,duration:.25,ease:'power3.inOut',onComplete:release});};finishRef.current=finish;
+  const finish=()=>{if(leaving)return;leaving=true;setExiting(true);document.documentElement.classList.remove('intro-pending');window.dispatchEvent(new Event('felipe:intro-complete'));exitTimer=setTimeout(release,250);};finishRef.current=finish;
   // Hard deadline prevents a slow or blocked media request from trapping the visitor.
   const deadline=Number(document.documentElement.dataset.introDeadline);
   const remaining=Number.isFinite(deadline)&&deadline>0?Math.max(0,deadline-performance.now()-250):1000;
   const timer=setTimeout(finish,src?3400:Math.min(1000,remaining));
   const hardStop=setTimeout(release,src?4500:2400);
   const preference=matchMedia('(prefers-reduced-motion: reduce)');const changed=()=>{if(preference.matches)release();};preference.addEventListener('change',changed);
-  return()=>{clearTimeout(timer);clearTimeout(hardStop);exit?.kill();preference.removeEventListener('change',changed);if(page)page.inert=false;document.body.style.overflow=overflow;onActiveChange(false);};
+  return()=>{clearTimeout(timer);clearTimeout(hardStop);if(exitTimer)clearTimeout(exitTimer);preference.removeEventListener('change',changed);if(page)page.inert=false;document.body.style.overflow=overflow;onActiveChange(false);};
  },[active,onActiveChange,src]);
  if(!active)return null;
- return <div className={`first-rep-intro ${src?'has-film':'signature-fallback'}`} ref={root} role="region" aria-label="Abertura Felipe Pereira" data-lenis-prevent>
+ return <div className={`first-rep-intro ${src?'has-film':'signature-fallback'} ${exiting?'is-exiting':''}`} ref={root} role="region" aria-label="Abertura Felipe Pereira" data-lenis-prevent>
   {src&&<video ref={video} src={asset(src)} autoPlay muted playsInline preload="auto" onTimeUpdate={e=>{if(e.currentTarget.currentTime>=3.4)finishRef.current();}} onEnded={()=>finishRef.current()} onError={()=>setSrc(null)} aria-hidden="true"/>}
   <div className="first-rep-light" aria-hidden="true"/><div className="first-rep-brand"><span className="first-rep-edition">BLACK EDITION</span><FelipePereiraSignature speed={src?1:(typeof window !== 'undefined' && matchMedia('(max-width: 767px)').matches?3.2:2.2)} onAnimationComplete={()=>setSigned(true)}/><span className={`first-rep-profession ${signed?'is-signed':''}`}>PERSONAL TRAINER</span></div>
  </div>;
