@@ -1,10 +1,7 @@
 import type { Metadata, Viewport } from 'next';
 import {site,siteSchema} from '@/content/site';
 import {preloaderFilm} from '@/content/preloader';
-import './fonts.css';
-import './globals.css';
-import './cinematic.css';
-import './conversion.css';
+import './entry.css';
 export const metadata: Metadata = {
  metadataBase:new URL(site.url), title:site.title, description:site.description,
  authors:[{name:'Felipe Pereira'}],alternates:{canonical:site.url},robots:{index:process.env.VERCEL_ENV === 'production',follow:process.env.VERCEL_ENV === 'production'},
@@ -15,7 +12,6 @@ export const metadata: Metadata = {
 export const viewport:Viewport={width:'device-width',initialScale:1,themeColor:'#0D0E10'};
 export default function RootLayout({children}:Readonly<{children:React.ReactNode}>){
  const fallbackOnly = !preloaderFilm.mobile && !preloaderFilm.desktop;
- return <html lang="pt-BR" suppressHydrationWarning><head><script dangerouslySetInnerHTML={{__html:`try{if(performance.getEntriesByType('navigation')[0]?.type==='reload'){history.scrollRestoration='manual';if(location.hash)history.replaceState(null,'',location.pathname+location.search);scrollTo(0,0)}var r=matchMedia('(prefers-reduced-motion: reduce)').matches,s=navigator.connection&&navigator.connection.saveData;if(!r&&!s&&!location.hash){document.documentElement.classList.add('intro-pending');var ms=${fallbackOnly ? 1200 : 4000};document.documentElement.dataset.introDeadline=String(performance.now()+ms);setTimeout(function(){document.documentElement.classList.remove('intro-pending')},ms)}}catch(e){}`}}/><style>{`html.intro-pending:before{content:"";position:fixed;inset:0;background:#080d10;z-index:9998}`}</style></head><body><script type="application/ld+json" dangerouslySetInnerHTML={{__html:JSON.stringify(siteSchema).replace(/</g,'\\u003c')}}/>{children}</body></html>;
+ return <html lang="pt-BR" suppressHydrationWarning><head><script dangerouslySetInnerHTML={{__html:`try{if(performance.getEntriesByType('navigation')[0]?.type==='reload'){history.scrollRestoration='manual';if(location.hash)history.replaceState(null,'',location.pathname+location.search);scrollTo(0,0)}var r=matchMedia('(prefers-reduced-motion: reduce)').matches,s=navigator.connection&&navigator.connection.saveData;if(!r&&!s&&!location.hash){document.documentElement.classList.add('intro-pending');var ms=${fallbackOnly ? "(matchMedia('(max-width: 767px)').matches ? 700 : 1200)" : '4000'};document.documentElement.dataset.introDeadline=String(performance.now()+ms);setTimeout(function(){document.documentElement.classList.remove('intro-pending')},ms)}}catch(e){}`}}/><style>{`html.intro-pending:before{content:"";position:fixed;inset:0;background:#080d10;z-index:9998}`}</style></head><body><script type="application/ld+json" dangerouslySetInnerHTML={{__html:JSON.stringify(siteSchema).replace(/</g,'\\u003c')}}/>{children}</body></html>;
 }
 
-import "./fidelity.css";

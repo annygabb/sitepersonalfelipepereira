@@ -4,8 +4,9 @@ import './app/fonts.css';
 import './app/globals.css';
 if (!location.hash && !matchMedia('(prefers-reduced-motion: reduce)').matches && !(navigator as Navigator & {connection?:{saveData?:boolean}}).connection?.saveData) {
   document.documentElement.classList.add('intro-pending');
-  document.documentElement.dataset.introDeadline = String(performance.now() + 1200);
-  setTimeout(() => document.documentElement.classList.remove('intro-pending'), 1200);
+  const introTime = matchMedia('(max-width: 767px)').matches ? 700 : 1200;
+  document.documentElement.dataset.introDeadline = String(performance.now() + introTime);
+  setTimeout(() => document.documentElement.classList.remove('intro-pending'), introTime);
 }
 createRoot(document.getElementById('root')!).render(<Landing/>);
 

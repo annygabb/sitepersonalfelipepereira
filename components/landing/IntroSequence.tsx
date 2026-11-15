@@ -32,6 +32,6 @@ export default function IntroSequence({onActiveChange}:{onActiveChange:(active:b
  if(!active)return null;
  return <div className={`first-rep-intro ${src?'has-film':'signature-fallback'}`} ref={root} role="region" aria-label="Abertura Felipe Pereira" data-lenis-prevent>
   {src&&<video ref={video} src={asset(src)} autoPlay muted playsInline preload="auto" onTimeUpdate={e=>{if(e.currentTarget.currentTime>=3.4)finishRef.current();}} onEnded={()=>finishRef.current()} onError={()=>setSrc(null)} aria-hidden="true"/>}
-  <div className="first-rep-light" aria-hidden="true"/><div className="first-rep-brand"><span className="first-rep-edition">BLACK EDITION</span><FelipePereiraSignature speed={src?1:2.2} onAnimationComplete={()=>setSigned(true)}/><span className={`first-rep-profession ${signed?'is-signed':''}`}>PERSONAL TRAINER</span></div>
+  <div className="first-rep-light" aria-hidden="true"/><div className="first-rep-brand"><span className="first-rep-edition">BLACK EDITION</span><FelipePereiraSignature speed={src?1:(typeof window !== 'undefined' && matchMedia('(max-width: 767px)').matches?3.2:2.2)} onAnimationComplete={()=>setSigned(true)}/><span className={`first-rep-profession ${signed?'is-signed':''}`}>PERSONAL TRAINER</span></div>
  </div>;
 }
