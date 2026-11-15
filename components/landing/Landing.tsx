@@ -2,7 +2,7 @@
 
 import {useEffect, useRef, useState, lazy, Suspense, type CSSProperties} from "react";
 import {IconArrowDown as ArrowDown, IconArrowLeft as ArrowLeft, IconArrowRight as ArrowRight, IconArrowUpRight as ArrowUpRight, IconCheck as Check, IconChevronDown as ChevronDown, IconClipboardCheck as ClipboardCheck, IconBarbell as Dumbbell, IconHeartbeat as HeartPulse, IconCalendar as CalendarDays, IconCalendarTime as CalendarClock, IconCalendarCheck as CalendarCheck, IconApple as Apple, IconHeadphones as Headphones, IconTrendingUp as TrendingUp, IconBrandInstagram as Instagram, IconMenu2 as Menu, IconMessageCircle as MessageCircle, IconArrowUpRight as MoveUpRight, IconPlayerPlay as Play, IconRefresh as RefreshCw, IconTarget as Target, IconX as X} from "@tabler/icons-react";
-import {Button} from "@/components/ui/button";
+import {PlanButton as Button} from "./PlanButton";
 import {currency, plans, type PlanId} from "@/content/coaching";
 import {asset} from "@/content/assets";
 const QualificationWizard = lazy(() => import("./QualificationWizard"));
@@ -104,10 +104,11 @@ export default function Landing() {
  const [motionReady,setMotionReady]=useState(false);
  useEffect(()=>{
   const activate=()=>setMotionReady(true);
-  window.addEventListener('felipe:intro-complete',activate,{once:true});
   window.addEventListener('scroll',activate,{once:true,passive:true});
-  const timer=window.setTimeout(activate,1800);
-  return ()=>{window.clearTimeout(timer);window.removeEventListener('felipe:intro-complete',activate);window.removeEventListener('scroll',activate);};
+  window.addEventListener('pointerdown',activate,{once:true,passive:true});
+  window.addEventListener('keydown',activate,{once:true});
+  const timer=window.setTimeout(activate,6000);
+  return ()=>{window.clearTimeout(timer);window.removeEventListener('scroll',activate);window.removeEventListener('pointerdown',activate);window.removeEventListener('keydown',activate);};
  },[]);
  return <>{motionReady&&<Suspense fallback={null}><MotionDirector paused={introActive||selectedPlan!==null}/></Suspense>}<IntroSequence onActiveChange={setIntroActive}/><div id="site-page"><div className="reading-progress" aria-hidden="true"/><a href="#conteudo" className="skip-link">Pular para o conteúdo</a><div className="campaign-bar">BLACK FRIDAY FELIPE PEREIRA · 16 A 30 DE NOVEMBRO <a href="#planos">VER OFERTAS <ArrowRight size={15} aria-hidden="true"/></a></div><BrandHeader/><main id="conteudo"><Hero/><CampaignCountdown/><AboutFelipe/><CoachingProcess/><ResultsCarousel/><LuxuryPricing onSelect={setSelectedPlan}/><section className="campaign-includes"><span>O QUE ESTÁ INCLUÍDO</span><h2>Seu objetivo merece <em>acompanhamento de verdade.</em></h2><div className="campaign-benefits">{["Avaliação física por fotos","Treinos personalizados","Acompanhamento individual on-line","Suporte pelo WhatsApp","Ajustes quando necessários","Feedback semanal","Registro fotográfico da evolução"].map(item=><p key={item}><Check size={18}/>{item}</p>)}</div></section><section className="journey-invitation"><AccentFrame gold/><div className="container"><span className="edition-label">PERSONAL JOURNEY</span><h2>O PRIMEIRO PASSO<br/>COMEÇA COM <em>VOCÊ.</em></h2><p>Seu próximo treino pode começar com uma boa conversa.<br/>Conte seu momento. Vamos encontrar um caminho possível.</p><a className="primary-button" href="#planos">ENCONTRAR MEU PLANO<ArrowRight size={21}/></a><span className="invitation-note">Seis perguntas rápidas. Depois, envie suas respostas pelo WhatsApp.</span></div></section><FAQ/></main><AnimatedWaveFooter/><MobilePlanBar hidden={introActive||selectedPlan!==null}/><FloatingWhatsApp hidden={introActive||selectedPlan!==null}/></div>{selectedPlan && <Suspense fallback={null}><QualificationWizard planId={selectedPlan} onClose={()=>setSelectedPlan(null)}/></Suspense>}</>;
 }

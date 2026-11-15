@@ -2,7 +2,7 @@
 
 import {useEffect, useRef, useState} from "react";
 import {IconArrowLeft as ArrowLeft, IconArrowRight as ArrowRight, IconCheck as Check, IconMessageCircle as MessageCircle, IconX as X} from "@tabler/icons-react";
-import {Button} from "@/components/ui/button";
+import {PlanButton as Button} from "./PlanButton";
 import {currency, makeMessage, plans, questions, whatsappUrl, type Person, type PlanId} from "@/content/coaching";
 
 type Props = {planId: PlanId | null; onClose: () => void};
